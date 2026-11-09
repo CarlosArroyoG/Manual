@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="es">
+<head>
+<title>Manual de usuario Similares</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Instructivo del sistema de punto de venta para cajeros y gerentes.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=IBM+Plex+Mono:wght@500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+/* Documento de consulta: indice fijo a la izquierda, texto a 70 caracteres, tablas y capturas con su propio recuadro. */
+:root {
+  --bg: #F4F7F8;
+  --surface: #FFFFFF;
+  --ink: #15222B;
+  --muted: #52666F;
+  --line: #D6DFE3;
+  --accent: #0A6B78;
+  --accent-ink: #FFFFFF;
+  --tint: #E4F0F2;
+  --aviso: #FBEFD5;
+  --aviso-ink: #5E3B00;
+  --code: #E8EEF0;
+  --si: #1B7A44;
+  --no: #B3261E;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1519; --surface: #131E24; --ink: #E3ECEF; --muted: #93A7B0; --line: #26363E;
+    --accent: #55C2D0; --accent-ink: #062A30; --tint: #12303A; --aviso: #2C2412; --aviso-ink: #F0CF8B;
+    --code: #1B2A31; --si: #5CCB8A; --no: #FF8A80; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D1519; --surface: #131E24; --ink: #E3ECEF; --muted: #93A7B0; --line: #26363E;
+  --accent: #55C2D0; --accent-ink: #062A30; --tint: #12303A; --aviso: #2C2412; --aviso-ink: #F0CF8B;
+  --code: #1B2A31; --si: #5CCB8A; --no: #FF8A80; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 17px; line-height: 1.6;
+  padding-block: 0 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: var(--accent); }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+.cabecera { max-width: 1180px; margin: 0 auto; padding-block: 44px 28px; border-bottom: 1px solid var(--line); }
+.marca { font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+.cabecera h1 { font: 700 clamp(34px, 5.4vw, 56px)/1.05 var(--display); letter-spacing: -.02em; margin: 0 0 16px; text-wrap: balance; }
+.cabecera .lead { max-width: 62ch; font-size: 19px; color: var(--ink); margin: 0 0 16px; }
+.cabecera .aparte { max-width: 62ch; margin: 0; padding: 12px 14px; background: var(--tint); border-radius: 6px; font-size: 15.5px; color: var(--ink); }
+
+.pagina { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 56px; padding-top: 32px; }
+.indice { position: sticky; top: 20px; align-self: start; max-height: calc(100vh - 40px); overflow-y: auto; font-size: 15px; }
+.indice summary { cursor: pointer; font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding: 6px 0 12px; list-style: none; }
+.indice summary::-webkit-details-marker { display: none; }
+.indice ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
+.indice a { display: grid; grid-template-columns: 2.2em 1fr; gap: 4px; text-decoration: none; color: var(--ink); padding: 6px 8px; border-radius: 5px; line-height: 1.3; }
+.indice a:hover { background: var(--tint); }
+.indice a.activo { background: var(--tint); color: var(--accent); font-weight: 700; }
+.indice .n { font: 500 12px/1.6 var(--mono); color: var(--muted); }
+.indice a.activo .n { color: var(--accent); }
+
+.manual { min-width: 0; max-width: 780px; }
+.manual h2, .manual h3, .manual h4 { font-family: var(--display); line-height: 1.15; text-wrap: balance; letter-spacing: -.01em; }
+.manual h2 { font-size: clamp(27px, 3.6vw, 36px); font-weight: 700; margin: 64px 0 18px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: baseline; gap: 14px; }
+.manual h2:first-child { margin-top: 0; }
+.manual h2 .num { font: 500 15px/1 var(--mono); color: var(--accent-ink); background: var(--accent); border-radius: 5px; padding: 6px 8px; transform: translateY(-3px); }
+.manual h3 { font-size: 22px; font-weight: 600; margin: 40px 0 10px; }
+.manual h3 .num { font: 500 14px/1 var(--mono); color: var(--muted); margin-right: 10px; }
+.manual h4 { font-size: 18px; font-weight: 600; margin: 28px 0 8px; }
+.manual p { margin: 0 0 14px; max-width: 70ch; }
+.manual strong { font-weight: 700; }
+.manual code { font: 500 .88em var(--mono); background: var(--code); padding: 1px 6px; border-radius: 4px; }
+.manual ul, .manual ol { margin: 0 0 16px; padding-left: 1.3em; max-width: 70ch; display: grid; gap: 6px; }
+.manual li::marker { color: var(--accent); font-weight: 700; }
+p.ruta { display: inline-block; font: 500 13px/1.5 var(--mono); background: var(--code); border-radius: 5px; padding: 6px 10px; margin-bottom: 18px; max-width: 100%; }
+p.ruta strong { font-weight: 500; color: var(--accent); }
+
+.nota { margin: 18px 0; padding: 12px 16px; background: var(--tint); border-radius: 6px; max-width: 70ch; font-size: 16px; }
+.nota-aviso { background: var(--aviso); color: var(--aviso-ink); }
+
+.tabla { overflow-x: auto; margin: 16px 0 22px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.45; }
+th { text-align: left; font: 500 11.5px/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 11px 14px; border-bottom: 1px solid var(--line); background: var(--code); white-space: nowrap; }
+td { padding: 10px 14px; border-top: 1px solid var(--line); vertical-align: top; min-width: 110px; }
+tbody tr:first-child td { border-top: 0; }
+td:first-child { min-width: 150px; }
+th.center, td.center { text-align: center; }
+th.right, td.right { text-align: right; }
+.si { color: var(--si); font-weight: 700; }
+.no { color: var(--no); font-weight: 700; }
+
+figure { margin: 22px 0 26px; max-width: 100%; }
+figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+figcaption { margin-top: 8px; font: 500 12px/1.4 var(--mono); color: var(--muted); letter-spacing: .02em; }
+
+.pie { max-width: 1180px; margin: 56px auto 0; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14.5px; }
+
+@media (max-width: 959px) {
+  body { font-size: 16.5px; }
+  .pagina { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-top: 20px; }
+  .indice { position: static; max-height: none; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 4px 12px 12px; }
+  .indice summary { padding-top: 12px; }
+  .cabecera { padding-block: 28px 20px; }
+  .manual h2 { margin-top: 48px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+</head>
+<body>
+<header class="cabecera">
+  <p class="marca">Genéricos y Ópticas de Similares</p>
+  <h1>Manual de usuario</h1>
+  <p class="lead">Sistema de punto de venta para ópticas. Este manual explica <strong>todo lo que pueden hacer los usuarios operativos</strong>: el <strong>Cajero</strong> y el <strong>Gerente</strong>. Cada sección dice para qué sirve la pantalla, quién la ve, cómo se usa paso a paso y qué reglas aplica el sistema.</p>
+  <p class="aparte">Las pantallas de administración del sistema (usuarios, catálogos, configuración financiera, metas, etc.) son exclusivas del rol <em>Administrador</em> y <strong>no</strong> se incluyen en este manual.</p>
+</header>
+
+<div class="pagina">
+  <nav class="indice" aria-label="Contenido del manual">
+    <details id="indice-det" open>
+      <summary>Contenido</summary>
+      <ol><li><a href="#1-primeros-pasos"><span class="n">1</span><span>Primeros pasos</span></a></li><li><a href="#2-menu-de-cada-perfil"><span class="n">2</span><span>Menú de cada perfil</span></a></li><li><a href="#3-flujo-de-trabajo-del-dia"><span class="n">3</span><span>Flujo de trabajo del día</span></a></li><li><a href="#4-cortes-de-caja"><span class="n">4</span><span>Cortes de caja</span></a></li><li><a href="#5-ventas"><span class="n">5</span><span>Ventas</span></a></li><li><a href="#6-abonos"><span class="n">6</span><span>Abonos</span></a></li><li><a href="#7-registro-de-venta"><span class="n">7</span><span>Registro de venta</span></a></li><li><a href="#8-clientes-y-examenes-de-la-vista"><span class="n">8</span><span>Clientes y exámenes de la vista</span></a></li><li><a href="#9-gastos"><span class="n">9</span><span>Gastos</span></a></li><li><a href="#10-inventario-gerente"><span class="n">10</span><span>Inventario (Gerente)</span></a></li><li><a href="#11-reportes-gerente"><span class="n">11</span><span>Reportes (Gerente)</span></a></li><li><a href="#12-documentos-que-genera-el-sistema"><span class="n">12</span><span>Documentos que genera el sistema</span></a></li><li><a href="#13-avisos-automaticos"><span class="n">13</span><span>Avisos automáticos</span></a></li><li><a href="#14-que-puede-hacer-cada-perfil"><span class="n">14</span><span>Qué puede hacer cada perfil</span></a></li><li><a href="#15-preguntas-frecuentes-y-solucion-de-problemas"><span class="n">15</span><span>Preguntas frecuentes y solución de problemas</span></a></li><li><a href="#16-glosario"><span class="n">16</span><span>Glosario</span></a></li></ol>
+    </details>
+  </nav>
+  <main class="manual">
+<h2 id="1-primeros-pasos" class="con-num"><span class="num">1</span>Primeros pasos</h2>
+<h3 id="11-iniciar-sesion" class="con-num"><span class="num">1.1</span>Iniciar sesión</h3>
+<p>Abre el sistema desde el navegador de la computadora de la sucursal. Se muestra la pantalla <strong>Acceso al sistema</strong>.</p>
+<div class="tabla"><table><thead><tr><th>Campo</th><th>Qué capturar</th></tr></thead><tbody><tr><td><strong>Usuario</strong></td><td>Tu usuario (no distingue mayúsculas de minúsculas).</td></tr><tr><td><strong>Contraseña</strong></td><td>Tu contraseña personal.</td></tr><tr><td><strong>Rol</strong></td><td>El sistema inicia automáticamente con el perfil asignado a tu usuario.</td></tr></tbody></table></div>
+<p>Pulsa <strong>Entrar</strong>.</p>
+<ul><li>Si tu usuario tiene más de un rol asignado, pide al administrador que corrija la asignación.</li><li>Si tu usuario está asignado a <strong>más de una sucursal</strong>, el sistema te pide elegir la <strong>sucursal</strong>; después te pide la <strong>caja</strong>. Si solo tienes una sucursal y una caja, entras directo.</li><li>Solo puedes entrar a sucursales y cajas que el administrador te haya asignado. Si ves <em>«La sucursal o caja no está asignada al usuario»</em>, pídele que revise tu asignación.</li><li><strong>Seguridad:</strong> después de <strong>8 intentos fallidos en 15 minutos</strong> el acceso se bloquea temporalmente (<em>«Demasiados intentos fallidos. Espera unos minutos…»</em>). Espera y vuelve a intentar.</li><li>Las contraseñas se guardan cifradas. Nunca compartas la tuya: el sistema registra con tu usuario cada venta, cobro y gasto.</li></ul>
+<h3 id="12-la-barra-de-contexto" class="con-num"><span class="num">1.2</span>La barra de contexto</h3>
+<p>Arriba de cada pantalla verás cuatro datos que indican <strong>con qué contexto estás trabajando</strong>:</p>
+<div class="tabla"><table><thead><tr><th>Dato</th><th>Significado</th></tr></thead><tbody><tr><td><strong>Sucursal</strong></td><td>La sucursal activa. Todo lo que registres pertenece a ella.</td></tr><tr><td><strong>Caja</strong></td><td>La caja activa. De ella salen los folios y los cortes.</td></tr><tr><td><strong>Usuario</strong></td><td>Tu nombre.</td></tr><tr><td><strong>Rol</strong></td><td>Tu perfil.</td></tr></tbody></table></div>
+<p>El botón <strong>➜ Salir</strong> cierra tu sesión. Úsalo siempre al terminar tu turno o al dejar la computadora.</p>
+<h3 id="13-reglas-generales-de-uso" class="con-num"><span class="num">1.3</span>Reglas generales de uso</h3>
+<ul><li>Los campos marcados con <strong>*</strong> (rojo) son obligatorios.</li><li>Las acciones irreversibles (cerrar corte, cancelar venta, eliminar) piden confirmación.</li><li>Las fechas se capturan como <strong>dd/mm/aaaa</strong>.</li><li>Todos los importes están en <strong>pesos mexicanos</strong>.</li><li>Si algo falla, el sistema muestra un mensaje; lee el mensaje antes de reintentar (casi siempre indica qué falta).</li></ul>
+<h2 id="2-menu-de-cada-perfil" class="con-num"><span class="num">2</span>Menú de cada perfil</h2>
+<p>El menú está en la parte izquierda y se organiza en secciones que se abren y cierran al pulsarlas. La sección de la pantalla en la que estás se mantiene abierta.</p>
+<h3 id="21-cajero" class="con-num"><span class="num">2.1</span>Cajero</h3>
+<figure><img src="img/menu_cajero.jpg" alt="Menú del cajero" loading="lazy"><figcaption>Menú del cajero</figcaption></figure>
+<div class="tabla"><table><thead><tr><th>Sección</th><th>Opciones</th></tr></thead><tbody><tr><td><strong>Ventas</strong></td><td>Nueva venta · Abonos · Clientes · Registro de ventas · Venta de emergencia (celular)</td></tr><tr><td><strong>Caja</strong></td><td>Cortes de caja · Gastos</td></tr></tbody></table></div>
+<p><strong>Qué ve el cajero.</strong> Solo sus propias ventas: en Registro de ventas, en el Reporte de ventas, en Órdenes y en la ficha de cada cliente (historial de ventas y RX). Puede <strong>abonar</strong> a la nota de otro vendedor de su sucursal buscándola por folio en <strong>Abonos</strong> e imprimir el recibo del pago, pero no ve el detalle de esa venta ni nada de comisiones; la comisión sigue siendo del vendedor original.</p>
+<h3 id="22-gerente" class="con-num"><span class="num">2.2</span>Gerente</h3>
+<figure><img src="img/menu_gerente.jpg" alt="Menú del gerente" loading="lazy"><figcaption>Menú del gerente</figcaption></figure>
+<div class="tabla"><table><thead><tr><th>Sección</th><th>Opciones</th></tr></thead><tbody><tr><td><strong>Ventas</strong></td><td>Nueva venta · Abonos · Clientes · Registro de ventas · Venta de emergencia (celular) · Ventas de emergencia por completar</td></tr><tr><td><strong>Caja</strong></td><td>Cortes de caja · Gastos</td></tr><tr><td><strong>Inventario</strong></td><td>Inventario general · Categorías · Revisión de micas</td></tr><tr><td><strong>Reportes</strong></td><td>Ingresos · Ventas · Horas extra (administrador) · Salidas de inventario · Órdenes de laboratorio · Clientes · Notas anteriores · Resumen financiero</td></tr></tbody></table></div>
+<h3 id="23-servicios-y-documentos-de-sucursales" class="con-num"><span class="num">2.3</span>Servicios y documentos de sucursales</h3>
+<p>En <strong>Configuración → Sucursales</strong>, el cajero y el gerente solo consultan y copian las referencias de pago de luz, internet y agua de su sucursal. Los originales, la renta y los vencimientos son exclusivos de administración.</p>
+<p>Administración abre <strong>Nueva sucursal</strong> o <strong>Editar</strong> y captura todo en la misma ficha: <strong>Datos generales</strong>, <strong>Servicios y documentos</strong> y <strong>Personal</strong>. Un solo botón <strong>Guardar sucursal</strong> guarda las pestañas juntas, incluidas referencias, fotos/PDF privados y próximas fechas de pago o renovación. La pantalla muestra los vencidos y próximos según la BD. Los avisos externos se envían desde una tarea diaria del servidor a los destinos de administración configurados en Telegram/Correos de avisos; no dependen de abrir el navegador. Ver Servicios de sucursales.</p>
+<aside class="nota">El menú se arma según los permisos de tu rol. Si necesitas una opción que no ves, solicítala al administrador.</aside>
+<h3 id="portada-de-empleados">Portada de empleados</h3>
+<p>Cajeros y gerentes ven tres tarjetas de su sucursal actual: <strong>Listos por entregar</strong>, <strong>En laboratorio</strong> (incluye pedidos de entrega futura) y <strong>Para alcanzar la meta</strong> mensual. Los pedidos ya resueltos salen de los conteos y los cancelados no cuentan. La meta usa las ventas del mes de toda la sucursal, sin cancelaciones ni notas importadas, y hereda la última meta configurada si el mes no tiene una propia. Si falta configurar la meta, muestra <strong>Sin meta</strong>. Los datos se consultan en BD al cargar la pantalla.</p>
+<p>Administración conserva su portada de Rentabilidad. El bloque de cuentas para depósito y su editor se retiraron de la portada para todos los perfiles.</p>
+<h2 id="3-flujo-de-trabajo-del-dia" class="con-num"><span class="num">3</span>Flujo de trabajo del día</h2>
+<p>Este es el orden recomendado para una jornada normal en mostrador:</p>
+<ol><li><strong>Inicia sesión</strong> (sección 1).</li><li><strong>Abre el corte de caja</strong> con el fondo inicial (sección 4). <em>Sin corte abierto no se puede vender.</em></li><li><strong>Atiende clientes:</strong> busca o registra al cliente (sección 8) y levanta la <strong>venta</strong> (sección 5). Entrega el <strong>ticket</strong> y, si hay lentes graduados, la <strong>orden de laboratorio</strong>.</li><li><strong>Cobra saldos</strong> cuando el cliente regrese: <em>Abonos</em> (sección 6) o <em>Registro de ventas</em> (sección 7).</li><li><strong>Registra los gastos</strong> del día pagados de la caja (sección 9).</li><li><strong>Al terminar:</strong> cuenta el efectivo, <strong>cierra el corte</strong> capturando lo contado (sección 4) e imprime el <strong>ticket del corte</strong>.</li><li>Pulsa <strong>Salir</strong>.</li></ol>
+<h2 id="4-cortes-de-caja" class="con-num"><span class="num">4</span>Cortes de caja</h2>
+<p class="ruta"><strong>Menú:</strong> Caja → Cortes de caja · <strong>Perfiles:</strong> Cajero y Gerente</p>
+<p>El <em>corte</em> es el periodo de trabajo de una caja: arranca con un <strong>fondo inicial</strong> y termina cuando se cuenta el efectivo. Todo lo que cobras, gastas o depositas queda registrado dentro del corte abierto.</p>
+<h3 id="41-si-no-hay-corte-abierto" class="con-num"><span class="num">4.1</span>Si no hay corte abierto</h3>
+<p>Si entras a <strong>Ventas</strong> sin corte abierto, el sistema te manda a <strong>Cortes</strong> (no se puede vender sin corte).</p>
+<figure><img src="img/cortes_01_sin_corte.jpg" alt="Ventas sin corte abierto redirige a Cortes" loading="lazy"><figcaption>Ventas sin corte abierto redirige a Cortes</figcaption></figure>
+<h3 id="42-abrir-un-corte" class="con-num"><span class="num">4.2</span>Abrir un corte</h3>
+<ol><li>Pulsa <strong>Nuevo</strong>.</li><li>El sistema propone abrir con <strong>el efectivo con el que cerró el corte anterior</strong> de esa caja. Pulsa <strong>Abrir corte con $…</strong> y listo, sin teclear nada.</li><li>Si la caja abre con otra cantidad, pulsa <strong>Es otra cantidad</strong>, captura el <strong>Fondo</strong> en pesos enteros y pulsa <strong>Guardar</strong> (se avisa al administrador que el fondo no es el del cierre anterior).</li><li>La primera vez que se usa una caja no hay cierre anterior, así que se captura el fondo.</li></ol>
+<figure><img src="img/cortes_02_nuevo.jpg" alt="Nuevo corte" loading="lazy"><figcaption>Nuevo corte</figcaption></figure>
+<aside class="nota">No se puede abrir un corte nuevo mientras haya otro abierto en la misma caja: primero se cierra contando el efectivo.</aside>
+<figure><img src="img/cortes_03_lista.jpg" alt="Lista de cortes" loading="lazy"><figcaption>Lista de cortes</figcaption></figure>
+<p>La lista muestra: <strong>ID</strong>, <strong>Fecha inicio</strong>, <strong>Fecha fin</strong>, <strong>Fondo inicial</strong>, <strong>Estado</strong> (Abierto / Cerrado) y las <strong>acciones</strong>:</p>
+<div class="tabla"><table><thead><tr><th>Acción</th><th>Para qué sirve</th></tr></thead><tbody><tr><td>🔍 (lupa)</td><td>Ver el <strong>resumen del corte</strong>.</td></tr><tr><td><strong>Cerrar</strong></td><td>Cierra el corte (solo si está abierto).</td></tr></tbody></table></div>
+<aside class="nota">El botón <em>Exportar cortes Excel</em> y las acciones <em>Editar</em> / <em>Reabrir</em> corte son exclusivos del Administrador.</aside>
+<h3 id="43-resumen-del-corte" class="con-num"><span class="num">4.3</span>Resumen del corte</h3>
+<p>Al pulsar la lupa se muestra el detalle:</p>
+<figure><img src="img/cortes_04_detalle.jpg" alt="Resumen del corte" loading="lazy"><figcaption>Resumen del corte</figcaption></figure>
+<div class="tabla"><table><thead><tr><th>Tarjeta / tabla</th><th>Qué muestra</th></tr></thead><tbody><tr><td><strong>Fondo inicial</strong></td><td>Efectivo con el que abriste.</td></tr><tr><td><strong>Ventas</strong></td><td>Total de las ventas registradas en el corte (aunque tengan saldo).</td></tr><tr><td><strong>Ingresos cobrados</strong></td><td>Dinero realmente cobrado (anticipos, abonos y pagos de contado).</td></tr><tr><td><strong>Gastos aprobados</strong></td><td>Gastos del corte pagados de la caja.</td></tr><tr><td><strong>Depósitos de efectivo</strong></td><td>Efectivo que sacaste de la caja para depositarlo en el banco.</td></tr><tr><td><strong>Efectivo esperado</strong></td><td>Lo que debería haber físicamente: <em>fondo + efectivo cobrado − gastos en efectivo − depósitos</em>.</td></tr><tr><td><strong>Efectivo contado</strong> y <strong>Diferencia</strong></td><td>Se llenan al cerrar: lo que contaste y la diferencia contra lo esperado.</td></tr><tr><td><strong>Ingresos por método</strong></td><td>Cobros agrupados por método y cuenta (efectivo, tarjeta…).</td></tr><tr><td><strong>Gastos del corte</strong></td><td>Cada gasto con su categoría y concepto.</td></tr><tr><td><strong>Comisiones del día</strong></td><td>Comisión generada por empleado (por tickets liquidados).</td></tr><tr><td><strong>Depósitos de efectivo</strong></td><td>Lista de depósitos y formulario para registrar uno nuevo.</td></tr></tbody></table></div>
+<p><strong>Ejemplo con los datos de la captura:</strong> fondo $800.00 + efectivo cobrado $900.00 − gasto $185.50 = <strong>$1,514.50</strong> de efectivo esperado.</p>
+<h3 id="44-registrar-un-deposito-de-efectivo" class="con-num"><span class="num">4.4</span>Registrar un depósito de efectivo</h3>
+<p>En el recuadro <strong>Depósitos de efectivo</strong> del corte:</p>
+<ol><li>Elige la <strong>Cuenta destino</strong> (las configura el administrador).</li><li>Captura el <strong>Importe</strong> (mayor a cero), la <strong>Fecha del depósito</strong> y la <strong>Referencia / folio</strong>.</li><li>Adjunta el <strong>comprobante</strong> (PDF, JPG o PNG) si lo tienes.</li><li>Pulsa <strong>Registrar depósito</strong>.</li></ol>
+<p>Reglas: los depósitos <strong>salen del efectivo de caja</strong> y <strong>no cuentan como gasto</strong>. Si el corte ya está <strong>cerrado</strong>, solo un <strong>gerente o el administrador</strong> puede registrar o cancelar depósitos en él.</p>
+<h3 id="45-cerrar-el-corte" class="con-num"><span class="num">4.5</span>Cerrar el corte</h3>
+<ol><li>En la lista, pulsa <strong>Cerrar</strong> en el corte abierto.</li><li>El sistema muestra <strong>el efectivo que calcula que hay en caja</strong> (fondo + efectivo cobrado − gastos − depósitos).</li><li>Si es lo que tienes, pulsa <strong>Sí, coincide: cerrar corte</strong> y confirma el aviso <em>«Va a cerrar el corte…, esta opción es irreversible»</em>. Se cierra con esa cifra.</li><li>Si no coincide, pulsa <strong>No coincide, voy a contar</strong>, captura el <strong>efectivo contado</strong> en pesos enteros y pulsa <strong>Cerrar Corte</strong>. La diferencia queda registrada.</li><li>Si mientras tanto se vendió o se gastó y la cifra cambió, el sistema no cierra y pide abrir el cierre otra vez.</li></ol>
+<figure><img src="img/cortes_06_cerrar_importe.jpg" alt="Cerrar corte" loading="lazy"><figcaption>Cerrar corte</figcaption></figure>
+<p>El sistema calcula la <strong>diferencia</strong> entre lo contado y lo esperado. Si cuadra, la diferencia es <strong>$0.00</strong>.</p>
+<figure><img src="img/cortes_07_cerrado_detalle.jpg" alt="Corte cerrado" loading="lazy"><figcaption>Corte cerrado</figcaption></figure>
+<p>En un corte cerrado aparecen tres enlaces al pie:</p>
+<div class="tabla"><table><thead><tr><th>Enlace</th><th>Documento</th></tr></thead><tbody><tr><td><strong>Imprimir ticket completo</strong></td><td>Ticket del corte con resumen, ingresos, gastos, depósitos, comisiones y conciliación de efectivo.</td></tr><tr><td><strong>Detalle de ventas</strong></td><td>Listado de las ventas del corte.</td></tr><tr><td><strong>Detalle de cobros</strong></td><td>Listado de los cobros del corte.</td></tr></tbody></table></div>
+<figure><img src="img/doc_corte_ticket.jpg" alt="Ticket del corte" loading="lazy"><figcaption>Ticket del corte</figcaption></figure>
+<aside class="nota nota-aviso"><strong>Importante:</strong> un corte cerrado <strong>no se puede reabrir ni editar</strong> con tu perfil; solo el administrador puede hacerlo. Cuenta bien antes de cerrar.</aside>
+<h3 id="46-horas-extra" class="con-num"><span class="num">4.6</span>Horas extra</h3>
+<p>En la misma pantalla de <strong>Cortes de caja</strong> hay una pestaña <strong>Horas extra</strong>. Cada empleado (cajero, gerente o administrador) registra <strong>solo las suyas</strong> y <strong>solo las de hoy</strong>: no se capturan días anteriores ni futuros, y la pantalla ni siquiera pide la fecha.</p>
+<ol><li>Entra a <em>Caja → Cortes de caja</em> y pulsa la pestaña <strong>Horas extra</strong>.</li><li>Elige las horas (de media en media hora, de 0.5 a 6) y escribe en qué trabajaste.</li><li>Pulsa <strong>Registrar horas extra de hoy</strong>. Queda <strong>Pendiente de aprobación</strong>; solo se puede registrar una vez al día.</li><li>Si te equivocaste, mientras siga pendiente puedes <strong>Borrar y volver a capturar</strong> (solo la de hoy).</li></ol>
+<p>Un administrador las aprueba o las rechaza (desde Telegram o desde <em>Reportes → Horas extra</em>). En tu historial verás:</p>
+<div class="tabla"><table><thead><tr><th>Estado</th><th>Qué ves</th></tr></thead><tbody><tr><td>Pendiente</td><td><em>Pendiente de aprobación</em></td></tr><tr><td>Aprobada</td><td><em>Aprobada: X h</em>, o <em>Aprobada con ajuste: X h (capturaste Y h)</em> si el administrador aprobó menos horas</td></tr><tr><td>Rechazada</td><td><em>Rechazada. Comunícate con tu supervisor.</em> (el motivo lo ve solo la administración)</td></tr></tbody></table></div>
+<p>El sistema <strong>solo cuenta horas</strong>: no calcula pagos.</p>
+<h2 id="5-ventas" class="con-num"><span class="num">5</span>Ventas</h2>
+<p class="ruta"><strong>Menú:</strong> Ventas → Nueva venta · <strong>Perfiles:</strong> Cajero y Gerente</p>
+<p>Pantalla principal de mostrador. Aquí se levanta una <strong>nota de venta</strong> con sus artículos, la <strong>graduación</strong> de los lentes y los <strong>pagos</strong>. Requiere un <strong>corte abierto</strong>.</p>
+<figure><img src="img/ventas_01_inicio.jpg" alt="Pantalla de ventas" loading="lazy"><figcaption>Pantalla de ventas</figcaption></figure>
+<h3 id="51-partes-de-la-pantalla" class="con-num"><span class="num">5.1</span>Partes de la pantalla</h3>
+<div class="tabla"><table><thead><tr><th>Zona</th><th>Función</th></tr></thead><tbody><tr><td><strong>CLIENTE</strong></td><td>Elegir o registrar al cliente. Muestra además el <strong>Folio</strong> de la nota (número consecutivo y serie de la caja).</td></tr><tr><td><strong>ARTICULO</strong></td><td>Buscar y agregar artículos.</td></tr><tr><td><strong>Optometrista / Vendedor / Fecha Entrega</strong></td><td>Datos de la nota.</td></tr><tr><td><strong>Tabla de artículos</strong></td><td>Clave, Descripción, Precio, Cant., Desc. e Importe de cada partida.</td></tr><tr><td><strong>FORMA DE PAGO</strong></td><td>Captura de los pagos (anticipos o liquidación).</td></tr><tr><td><strong>TOTAL / ABONOS / SALDO</strong></td><td>Totales de la nota.</td></tr><tr><td><strong>Guardar / Cancelar</strong></td><td>Registrar la venta o limpiar la pantalla.</td></tr></tbody></table></div>
+<h3 id="52-paso-1-elegir-el-cliente" class="con-num"><span class="num">5.2</span>Paso 1 — Elegir el cliente</h3>
+<p>Pulsa la <strong>lupa</strong> junto a CLIENTE. Se abre la lista de clientes de tu sucursal; puedes filtrar por nombre o navegar por páginas. Haz clic en el cliente para seleccionarlo. Cada sucursal ve y vende solo a los clientes que se registraron en ella (el sistema rechaza la venta si se manda un cliente de otra sucursal).</p>
+<figure><img src="img/ventas_02_buscar_cliente.jpg" alt="Buscar cliente" loading="lazy"><figcaption>Buscar cliente</figcaption></figure>
+<p>¿El cliente no existe? Pulsa el botón rojo <strong>+</strong> (<em>Registrar cliente nuevo</em>). Se abre un formulario rápido con: <strong>Nombre completo*</strong>, <strong>Estado*</strong>, Ciudad, <strong>Colonia*</strong>, Dirección, Teléfono, Celular y Correo. Al pulsar <strong>Guardar y seleccionar</strong> el cliente queda registrado y seleccionado en la venta.</p>
+<h3 id="53-paso-2-agregar-articulos" class="con-num"><span class="num">5.3</span>Paso 2 — Agregar artículos</h3>
+<p>Pulsa la <strong>lupa</strong> junto a ARTICULO. En el cuadro puedes buscar por <strong>Descripción</strong> o filtrar por <strong>Línea</strong> (categoría: Accesorios, Micas, Armazones, Lentes de contacto, Servicios…). Haz clic en el artículo para agregarlo.</p>
+<figure><img src="img/ventas_03_buscar_articulo.jpg" alt="Buscar artículo" loading="lazy"><figcaption>Buscar artículo</figcaption></figure>
+<p>Cada artículo agregado aparece como una fila. Puedes:</p>
+<ul><li>Cambiar la <strong>Cantidad</strong> (se recalcula el importe al salir del campo o pulsar Enter).</li><li>Capturar un <strong>descuento (%)</strong> de <strong>0 a 100</strong>. Fuera de ese rango el sistema no deja guardar.</li><li>Quitar la fila con el icono de <strong>bote de basura</strong> (pide confirmación).</li></ul>
+<aside class="nota"><strong>Tipos de artículo</strong> (se ve debajo de la descripción): <em>Inventariable</em> (descuenta existencias), <em>Sobre pedido</em> (no maneja existencia, se pide al laboratorio) y <em>Servicio</em> (no maneja existencia). Si agregas más piezas de un artículo <em>inventariable</em> de las que hay en la sucursal, al guardar el sistema avisa <strong>«Stock insuficiente… Disponible: N»</strong>.</aside>
+<h3 id="54-paso-3-graduacion-lentes-y-micas" class="con-num"><span class="num">5.4</span>Paso 3 — Graduación (lentes y micas)</h3>
+<p>Las <strong>micas</strong> y los <strong>lentes de contacto</strong> muestran el botón <strong>✚ Graduación</strong>. Al pulsarlo se despliega el panel de graduación de esa pieza.</p>
+<figure><img src="img/ventas_04_graduacion.jpg" alt="Panel de graduación" loading="lazy"><figcaption>Panel de graduación</figcaption></figure>
+<div class="tabla"><table><thead><tr><th>Zona</th><th>Qué capturar</th></tr></thead><tbody><tr><td><strong>Datos del artículo</strong> (Tipo mica, Tipo progresivo, Material, Color)</td><td>Solo lectura: vienen del catálogo y no se modifican durante la venta.</td></tr><tr><td><strong>Tipo armazón</strong></td><td>Texto libre (<em>ej. aviador, completo, tres piezas</em>).</td></tr><tr><td><strong>ADD</strong></td><td>Adición (lentes progresivos / bifocales).</td></tr><tr><td><strong>AO</strong></td><td>Altura óptica.</td></tr><tr><td><strong>DIP</strong></td><td>Distancia interpupilar.</td></tr><tr><td><strong>OD (ojo derecho) / OI (ojo izquierdo)</strong></td><td><strong>Esf.</strong> (esfera), <strong>Cil.</strong> (cilindro), <strong>Eje</strong> y <strong>NPD</strong> (distancia naso‑pupilar).</td></tr><tr><td><strong>Observación</strong></td><td>Notas para el laboratorio (por ejemplo, tratamiento antirreflejante).</td></tr><tr><td><strong>CV / AV</strong></td><td>Campo visual y agudeza visual (opcionales).</td></tr><tr><td><strong>Icono del ojo</strong> 👁</td><td><strong>Importar la última RX</strong> registrada del cliente para no capturarla de nuevo.</td></tr></tbody></table></div>
+<aside class="nota">Si la nota lleva <strong>armazón y mica</strong>, el armazón queda asociado a la mica para la orden de laboratorio.</aside>
+<p><strong>Reglas de las micas.</strong> La <strong>DIP es el único dato obligatorio</strong> (dos números separados por una diagonal, por ejemplo 65.3/98.1; cada uno entre 20 y 99.9 mm, con un decimal como máximo). Esfera, cilindro y ADD son opcionales, pero si se capturan deben ir en pasos de 0.25 y <strong>dentro del rango que el catálogo define para esa mica</strong> (Esfera mínima/máxima, Cilindro mínimo/máximo y Adición mínima/máxima en el artículo); si se salen del rango el sistema <strong>no deja vender</strong>. Una mica sin rango de adición, o con 0 y 0, <strong>no puede llevar adición</strong> (el campo ADD queda en 0 y bloqueado). </p>
+<p><strong>Reglas de los lentes de contacto.</strong> Todos los artículos de la categoría <em>Lentes de contacto</em> (también sus variantes, por ejemplo <em>Lente de contacto tórico</em>) llevan el panel de graduación, pero <strong>ningún dato es obligatorio</strong>, no tienen rangos y <strong>no piden DIP</strong>. Si el vendedor no captura nada, la venta se guarda sin graduación (y no cambia la última RX del cliente). Si captura algo, se guarda tal cual y sale en la <strong>orden de laboratorio</strong> (<em>Ord. Lab</em>), con el título <em>Graduación - Lentes de contacto</em> y sin DIP ni medidas de montaje.</p>
+<p><strong>Esfera, cilindro y adición del catálogo.</strong> En <strong>Catálogos › Artículos</strong>, cada lente de contacto tiene los campos <strong>Esfera</strong>, <strong>Cilindro</strong> y <strong>Adición</strong> (opcionales; se pueden dejar en 0). Al venderlo, el panel de graduación ya trae esos valores en ambos ojos y en ADD, y el vendedor los puede cambiar aunque estén en cero; se guardan los que queden al guardar la venta. Si una categoría con otro nombre debe llevar graduación de lente de contacto, asígnale el atributo <strong>ESFERA</strong> (y, si quieres, CILINDRO y ADICIÓN) en <strong>Catálogos › Categorías</strong>.</p>
+<h3 id="55-paso-4-optometrista-vendedor-y-fecha-de-entrega" class="con-num"><span class="num">5.5</span>Paso 4 — Optometrista, vendedor y fecha de entrega</h3>
+<ul><li><strong>Optometrista:</strong> quien realizó el examen.</li><li><strong>Vendedor:</strong> quien atendió la venta (a él se le atribuyen la venta y su comisión).</li><li><strong>Fecha Entrega:</strong> cuándo se prometió al cliente.</li></ul>
+<p>Las listas muestran a los <strong>cajeros y gerentes asignados a tu sucursal</strong>. Los tres campos son <strong>obligatorios</strong>.</p>
+<h3 id="56-paso-5-cobro" class="con-num"><span class="num">5.6</span>Paso 5 — Cobro</h3>
+<figure><img src="img/ventas_05_cobro.jpg" alt="Cobro de la venta" loading="lazy"><figcaption>Cobro de la venta</figcaption></figure>
+<ol><li>Elige la <strong>Forma de pago</strong>: EFECTIVO, CHEQUE, DEPOSITO, TARJETA BANCARIA, TARJETA CREDITO, TARJETA DEBITO o TRANSFERENCIA (según lo configurado).</li><li>Si es <strong>transferencia, depósito o tarjeta</strong>, selecciona la <strong>Cuenta / destino</strong> (terminal o cuenta que recibe el dinero). Es <strong>obligatoria</strong> en esos métodos; si no aparece ninguna, avisa al administrador para que la dé de alta.</li><li>Captura la <strong>Referencia</strong> (por ejemplo, la autorización de la terminal), el <strong>Importe</strong> y, opcionalmente, una <strong>Observación</strong> (por ejemplo, <em>Anticipo</em>).</li><li>Pulsa el botón <strong>✚</strong> (o Enter) para agregar el pago. Puedes agregar <strong>varios pagos</strong> (por ejemplo, parte en efectivo y parte con tarjeta). El icono de bote de basura quita un pago.</li></ol>
+<p>Reglas:</p>
+<ul><li>La suma de pagos <strong>no puede superar el total</strong> (<em>«No se puede abonar más del total»</em>).</li><li>No es necesario pagar el total: lo que falte queda como <strong>SALDO</strong> y se cobra después en <em>Abonos</em>.</li></ul>
+<p><strong>Pago con tarjeta (ejemplo):</strong></p>
+<figure><img src="img/ventas_07_pago_tarjeta.jpg" alt="Pago con tarjeta" loading="lazy"><figcaption>Pago con tarjeta</figcaption></figure>
+<h3 id="57-paso-6-guardar" class="con-num"><span class="num">5.7</span>Paso 6 — Guardar</h3>
+<p>Pulsa <strong>Guardar</strong> y confirma <em>«Está a punto de crear una nueva NOTA, ¿desea continuar?»</em>. El sistema valida que haya <strong>cliente</strong>, <strong>optometrista</strong>, <strong>vendedor</strong>, <strong>fecha de entrega</strong> y <strong>al menos un artículo</strong>.</p>
+<p>Al guardar:</p>
+<ul><li>Se asigna el <strong>folio</strong> (y se actualiza el consecutivo de la caja).</li><li>Se descuenta el <strong>inventario</strong> de los artículos inventariables.</li><li>Se registran los <strong>cobros</strong>; si la nota queda <strong>totalmente liquidada</strong> se genera la <strong>comisión</strong> del vendedor.</li><li>Si hubo graduación, se actualiza la fecha de <strong>última RX</strong> del cliente.</li></ul>
+<figure><img src="img/ventas_06_guardada.jpg" alt="Venta guardada" loading="lazy"><figcaption>Venta guardada</figcaption></figure>
+<p>Aparecen cuatro botones:</p>
+<div class="tabla"><table><thead><tr><th>Botón</th><th>Qué hace</th></tr></thead><tbody><tr><td><strong>Ticket</strong></td><td>Abre el ticket (nota de venta) en PDF para imprimir.</td></tr><tr><td><strong>Ord. Lab</strong></td><td>Abre la <strong>orden de laboratorio</strong> con la graduación y las medidas.</td></tr><tr><td><strong>Factura</strong></td><td>Abre la pantalla <em>Solicitar factura</em> (sección 12.3).</td></tr><tr><td><strong>Nueva</strong></td><td>Limpia la pantalla para una nueva venta.</td></tr></tbody></table></div>
+<h3 id="58-nota-o-factura" class="con-num"><span class="num">5.8</span>Nota o factura</h3>
+<p>Por omisión la venta se registra como <strong>NOTA</strong> (remisión). Si pulsas sobre la etiqueta del <strong>Folio</strong> aparecen las opciones <strong>NOTA / FACTURA</strong> para elegir el tipo de documento; cada tipo usa su propia serie y consecutivo de la caja.</p>
+<h2 id="6-abonos" class="con-num"><span class="num">6</span>Abonos</h2>
+<p class="ruta"><strong>Menú:</strong> Ventas → Abonos · <strong>Perfiles:</strong> Cajero y Gerente</p>
+<p>Sirve para <strong>cobrar el saldo pendiente</strong> de notas ya registradas.</p>
+<figure><img src="img/abonos_01_lista.jpg" alt="Notas con saldo pendiente" loading="lazy"><figcaption>Notas con saldo pendiente</figcaption></figure>
+<h3 id="61-buscar-notas-con-saldo" class="con-num"><span class="num">6.1</span>Buscar notas con saldo</h3>
+<p>La pantalla lista las notas <strong>con saldo pendiente</strong> de la sucursal: <strong>Folio, Cliente, Fecha, Total, Abonado y Saldo</strong>.</p>
+<ul><li>Para localizar una nota, escribe su <strong>Folio</strong> (opcional) y pulsa <strong>Buscar</strong>. El campo acepta también el <strong>número del ticket del sistema anterior</strong>, con o sin serie: <code>7614</code>, <code>F-7614</code> o <code>F7614</code>.</li><li>El <strong>Gerente</strong> ve todas las notas de la sucursal; el <strong>Cajero</strong> ve en la lista <strong>únicamente las notas en las que él es el vendedor</strong>.</li><li>Si llega el cliente de <strong>otro vendedor de la misma sucursal</strong>, el cajero escribe el <strong>folio</strong> o el <strong>ticket anterior</strong> de esa nota y pulsa <strong>Buscar</strong>: aparece con la leyenda <em>Vendió …</em> y solo puede <strong>cobrar el abono e imprimir el recibo</strong>; no ve nada de comisiones. La <strong>comisión sigue siendo del vendedor original</strong>, aunque el abono que la liquide lo cobre otra persona. Las <strong>notas anteriores</strong> siguen la misma regla: en la lista cada quien ve las suyas y las de otros solo buscándolas. Fuera de Abonos (registro de ventas, reimprimir la nota, cancelar, reporte de Notas anteriores) el cajero sigue viendo solo lo suyo.</li></ul>
+<h3 id="62-registrar-un-abono" class="con-num"><span class="num">6.2</span>Registrar un abono</h3>
+<ol><li>En la nota deseada pulsa <strong>Cobrar</strong>.</li><li>Revisa las tarjetas <strong>Total, Abonado y Saldo pendiente</strong>.</li><li>Elige la <strong>Forma de pago</strong>, la <strong>Cuenta / destino</strong> (si el método lo requiere), la <strong>Referencia</strong>, el <strong>Importe</strong> y una <strong>Observación</strong>.</li><li>Pulsa <strong>Registrar abono</strong>.</li></ol>
+<figure><img src="img/abonos_02_cobrar.jpg" alt="Cobrar una nota" loading="lazy"><figcaption>Cobrar una nota</figcaption></figure>
+<p>Después del abono el saldo se actualiza y el <strong>historial de abonos</strong> muestra el movimiento. Con <strong>Imprimir ticket</strong> obtienes el ticket actualizado.</p>
+<figure><img src="img/abonos_03_registrado.jpg" alt="Abono registrado" loading="lazy"><figcaption>Abono registrado</figcaption></figure>
+<p>Reglas del sistema:</p>
+<ul><li>El abono <strong>no puede ser mayor al saldo</strong> actual.</li><li>Debes tener un <strong>corte abierto</strong> (<em>«Debes tener un corte abierto para registrar el abono»</em>).</li><li>Los métodos con cuenta (tarjeta, transferencia, depósito) exigen elegir la <strong>cuenta/destino</strong>, y la cuenta debe pertenecer a tu sucursal.</li><li>Cuando el abono <strong>liquida la nota</strong> (saldo en cero) se genera la <strong>comisión</strong> del vendedor. El <strong>bono diario</strong> se calcula por separado: por cada <strong>$2,500 cobrados</strong> en el día para el vendedor original, incluidos anticipos y abonos de uno o varios tickets aunque tengan saldo, se generan <strong>$100</strong>. Se excluyen accesorios; los tickets mixtos se prorratean. El sobrante no pasa a otro día. Los bonos tienen su propio estado de pago en Personal → Comisiones. También se reconstruyen los días anteriores con esta regla; consulta Bonos por cobros.</li></ul>
+<h3 id="63-notas-anteriores-tickets-del-sistema-anterior" class="con-num"><span class="num">6.3</span>Notas anteriores (tickets del sistema anterior)</h3>
+<p>Son tickets vendidos en el sistema anterior que todavía tienen saldo. Se cobran en Abonos con las mismas reglas que cualquier nota (el cajero ve las suyas y cobra las de otros buscándolas por folio o ticket anterior); importarlas, capturarlas a mano y el reporte son de administradores y gerentes. Aparecen en la lista de Abonos con la leyenda <em>Nota anterior · ticket F-7614</em>, llevan su propia serie (<strong>NA</strong> + sucursal) y no cuentan como venta nueva (ni en el corte, ni en metas, ni en rentabilidad; los cobros recibidos aquí sí pueden generar bono diario).</p>
+<ul><li><strong>Importarlas (Administrador):</strong> en <em>Reportes → Notas anteriores</em> pulsa <strong>Importar del sistema anterior (PDF)</strong> y sube el reporte de saldos por vendedor de cada sucursal (se pueden subir varios a la vez). En la vista previa revisa la <strong>sucursal</strong> de cada archivo y pulsa <strong>Importar</strong>. Cada ticket queda a nombre de la <strong>persona</strong> que dice el reporte, buscada por su <strong>nombre completo</strong> (no por su usuario; sin importar mayúsculas, acentos ni el orden de nombre y apellidos). Si esa persona aún no está registrada, sus tickets quedan <em>pendientes de registrar</em> y, en cuanto la des de alta en <em>Usuarios</em> con ese nombre, sus notas y comisiones se le asignan solas. Solo entran los tickets con saldo pendiente; los que ya estaban registrados no se tocan, así que importar dos veces el mismo PDF no duplica nada. El sistema comprueba que cada vendedor sume su <em>TOTAL VENDEDOR</em>; si el PDF no cuadra, no importa ese archivo.</li><li><strong>Cliente:</strong> el reporte no trae al paciente, así que la nota importada queda a nombre de <em>POR ASIGNAR (NOTA ANTERIOR)</em>. En su <strong>primer abono</strong> el sistema pide buscar y elegir al paciente, y desde ahí la nota queda a su nombre.</li><li><strong>Capturar una a mano:</strong> en Abonos, <strong>Abono de nota anterior</strong>, con la serie y el folio del ticket viejo. La primera vez se captura la fecha de venta, el <strong>importe total del ticket</strong>, el saldo anterior, quién vendió y el cliente.</li><li><strong>Comisión:</strong> al liquidarse genera la comisión del vendedor original (el <strong>5% del importe total del ticket</strong>, no solo del saldo cobrado aquí), <em>por pagar</em> en Comisiones como cualquier otra.</li></ul>
+<h3 id="64-pedidos-por-entregar-ventas-pendientes" class="con-num"><span class="num">6.4</span>Pedidos por entregar (Ventas → Pendientes)</h3>
+<p>La ubicación del pedido y el pago se controlan por separado. <strong>Liquidar no significa entregar.</strong> La pantalla tiene tres pestañas:</p>
+<div class="tabla"><table><thead><tr><th>Pestaña</th><th>Qué muestra</th><th>Botón principal</th></tr></thead><tbody><tr><td><strong>Por llegar del laboratorio</strong></td><td>Pedidos en proceso, incluidos los de fecha futura, para hoy y atrasados.</td><td><strong>Confirmar llegada a sucursal</strong> cuando estén físicamente ahí.</td></tr><tr><td><strong>Pagados sin recoger</strong></td><td>Llegada confirmada y saldo cero.</td><td><strong>Entregar al cliente</strong>, con nombre de quien recoge y fecha real.</td></tr><tr><td><strong>Con saldo sin recoger</strong></td><td>Llegada confirmada y saldo pendiente.</td><td><strong>Ir a Abonos</strong> para cobrar; la entrega se confirma por separado.</td></tr></tbody></table></div>
+<ul><li>Cada pestaña tiene <strong>Exportar este informe a Excel</strong>, con todas las filas de esa vista y los mismos filtros de sucursal y búsqueda.</li><li><strong>Anotar seguimiento</strong> registra llamadas, notas o que el cliente no ha recogido; no elimina el pedido.</li><li>Los cierres antiguos ambiguos y las entregas automáticas al cobrar aparecen en <strong>Por revisar</strong>. No se supone que fueron entregados por su antigüedad.</li><li><strong>Registrar salida sin entrega</strong>, para gerentes y administradores, exige motivo y destino físico; no cancela la venta ni devuelve dinero.</li><li><strong>Ver entregas y salidas</strong> abre el historial por separado. Un gerente puede corregir una entrega capturada por error, con motivo y auditoría.</li><li>La garantía empieza al confirmar la entrega física. No se puede entregar con saldo pendiente: primero se liquida en Abonos (cobrar no entrega por sí solo).</li><li>Toda la sucursal puede atender sus pedidos; el gerente ve sus sucursales y el administrador todas.</li></ul>
+<p>Consulta el flujo completo de pedidos y entregas, incluido cómo conciliar los registros anteriores.</p>
+<h2 id="7-registro-de-venta" class="con-num"><span class="num">7</span>Registro de venta</h2>
+<p class="ruta"><strong>Menú:</strong> Ventas → Registro de ventas · <strong>Perfiles:</strong> Cajero y Gerente</p>
+<p>Es el <strong>historial de ventas</strong>: permite buscar cualquier nota, ver su detalle completo, abonar, reimprimir documentos y (solo gerente) cancelarla.</p>
+<figure><img src="img/registro_01_lista.jpg" alt="Lista de ventas" loading="lazy"><figcaption>Lista de ventas</figcaption></figure>
+<h3 id="71-buscar-una-venta" class="con-num"><span class="num">7.1</span>Buscar una venta</h3>
+<p>Elige la sucursal, escribe el <strong>Folio</strong> si lo conoces (si lo dejas vacío muestra todas) y pulsa <strong>Buscar</strong>. En la lista pulsa <strong>Ver</strong> en la venta que necesites. El <strong>Cajero</strong> solo ve las ventas donde él fue el vendedor.</p>
+<h3 id="72-detalle-de-la-venta" class="con-num"><span class="num">7.2</span>Detalle de la venta</h3>
+<figure><img src="img/registro_02_detalle.jpg" alt="Detalle de la venta" loading="lazy"><figcaption>Detalle de la venta</figcaption></figure>
+<p>Muestra el <strong>estado</strong> (ACTIVA / CANCELADA), el <strong>cliente</strong>, las fechas de <strong>creación</strong> y <strong>entrega</strong>, el <strong>vendedor</strong>, las <strong>partidas</strong> (número, descripción, precio, cantidad, descuento y subtotal), el <strong>historial de abonos</strong> (fecha, método, cuenta/destino, referencia e importe) y el resumen <strong>Importe / Abonos / Saldo</strong>.</p>
+<p>Con <strong>← Volver a la lista</strong> regresas a los resultados.</p>
+<h3 id="73-agregar-un-abono-desde-aqui" class="con-num"><span class="num">7.3</span>Agregar un abono desde aquí</h3>
+<p>En el recuadro <strong>Agregar abono</strong> elige la forma de pago, la cuenta (si aplica), la referencia, el importe y la observación; pulsa <strong>Guardar abono</strong> y confirma. El saldo y el ticket se actualizan al instante. Aplican las mismas reglas de la sección 6.2.</p>
+<h3 id="74-botones-de-la-venta" class="con-num"><span class="num">7.4</span>Botones de la venta</h3>
+<div class="tabla"><table><thead><tr><th>Botón</th><th>Quién</th><th>Qué hace</th></tr></thead><tbody><tr><td><strong>Ticket</strong></td><td>Cajero y Gerente</td><td>Abre la nota en PDF.</td></tr><tr><td><strong>Ord. Lab</strong></td><td>Cajero y Gerente</td><td>Abre la orden de laboratorio.</td></tr><tr><td><strong>Solicitar factura</strong></td><td>Cajero y Gerente</td><td>Abre el formulario de factura (sección 12.3).</td></tr><tr><td><strong>Cancelar Venta</strong></td><td><strong>Solo Gerente</strong> (y Administrador)</td><td>Cancela la venta.</td></tr></tbody></table></div>
+<h3 id="75-cancelar-una-venta-gerente" class="con-num"><span class="num">7.5</span>Cancelar una venta (Gerente)</h3>
+<figure><img src="img/registro_04_detalle_gerente.jpg" alt="Detalle con botón Cancelar Venta" loading="lazy"><figcaption>Detalle con botón Cancelar Venta</figcaption></figure>
+<ol><li>Abre la venta y pulsa <strong>Cancelar Venta</strong>.</li><li>Confirma el aviso <em>«Está a punto de cancelar la venta, esta opción es irreversible»</em>.</li></ol>
+<figure><img src="img/registro_05_cancelada.jpg" alt="Venta cancelada" loading="lazy"><figcaption>Venta cancelada</figcaption></figure>
+<p>Efectos de la cancelación:</p>
+<ul><li>La venta queda <strong>CANCELADA</strong> y deja de contar en los reportes de ventas.</li><li>Se <strong>anula la comisión</strong> pendiente del vendedor.</li><li>Si el corte de la venta o alguno de sus cobros está <strong>cerrado</strong>, debe reabrirse antes de cancelar.</li><li>En las nuevas cancelaciones, los <strong>cobros recibidos permanecen en los ingresos de caja</strong>. Al devolver dinero al cliente, registra esa salida <strong>una sola vez como gasto</strong>, indicando el folio de la venta. Cancelar no devuelve dinero automáticamente. Las cancelaciones anteriores conservan su cálculo histórico.</li><li>Una venta cancelada no se puede cancelar otra vez ni recibe más abonos.</li><li><strong>Es irreversible.</strong> Antes de cancelar confirma que es la venta correcta.</li></ul>
+<aside class="nota">El <strong>Cajero no ve</strong> el botón <em>Cancelar Venta</em>. Si hay que cancelar una venta, pídelo a un gerente.</aside>
+<h2 id="8-clientes-y-examenes-de-la-vista" class="con-num"><span class="num">8</span>Clientes y exámenes de la vista</h2>
+<p class="ruta"><strong>Menú:</strong> Ventas → Clientes · <strong>Perfiles:</strong> Cajero y Gerente</p>
+<p>Catálogo de clientes de la sucursal, con su <strong>historial clínico</strong> y sus <strong>exámenes de la vista</strong>.</p>
+<h3 id="81-buscar-clientes" class="con-num"><span class="num">8.1</span>Buscar clientes</h3>
+<figure><img src="img/clientes_01_lista_vacia.jpg" alt="Lista de clientes vacía" loading="lazy"><figcaption>Lista de clientes vacía</figcaption></figure>
+<p>Hay dos formas de buscar:</p>
+<ul><li><strong>Por letra:</strong> usa el paginador <strong>A, B, C…</strong> para ver los clientes cuyo nombre empieza con esa letra.</li><li><strong>Por texto:</strong> escribe en <strong>Buscar</strong> y pulsa la lupa (o Enter).</li></ul>
+<figure><img src="img/clientes_04_busqueda.jpg" alt="Búsqueda de clientes" loading="lazy"><figcaption>Búsqueda de clientes</figcaption></figure>
+<p>La tabla muestra <strong>ID, Cliente, Teléfono, Última RX</strong> y las acciones: 🔍 <strong>ver / editar</strong> y 🗑 <strong>eliminar</strong> (pide confirmación: <em>«Está a punto de eliminar el cliente»</em>).</p>
+<h3 id="82-registrar-un-cliente-nuevo" class="con-num"><span class="num">8.2</span>Registrar un cliente nuevo</h3>
+<p>Pulsa <strong>Nuevo</strong>. El formulario tiene tres bloques.</p>
+<figure><img src="img/clientes_02_nuevo.jpg" alt="Formulario de cliente nuevo" loading="lazy"><figcaption>Formulario de cliente nuevo</figcaption></figure>
+<p><strong>Datos generales</strong></p>
+<div class="tabla"><table><thead><tr><th>Campo</th><th>Notas</th></tr></thead><tbody><tr><td><strong>Cliente*</strong></td><td>Nombre completo.</td></tr><tr><td>Dirección</td><td>Calle y número.</td></tr><tr><td><strong>Estado*</strong></td><td>Se elige de una lista.</td></tr><tr><td>Ciudad</td><td>Texto libre.</td></tr><tr><td><strong>Colonia*</strong></td><td>Texto libre.</td></tr><tr><td>Teléfono / Celular</td><td>Úsalos para contactar al cliente (avisos y WhatsApp).</td></tr><tr><td>Ocupación</td><td>Opcional.</td></tr><tr><td>E‑mail</td><td>Se usa para enviar el reporte del examen.</td></tr><tr><td>Fec. Nac. (dd/mm/aaaa)</td><td>Fecha de nacimiento.</td></tr></tbody></table></div>
+<p><strong>Historial clínico</strong> (antecedentes y molestias): edad, si utiliza anteojos, problema visual, si ve mal de lejos o de cerca, dolor de cabeza, irritación, comezón, dolor ocular, molestias al usar aparatos electrónicos, fotofobia, cirugía ocular, glaucoma, alergias (con detalle), diabetes, hipertensión, lagrimeo, desde cuándo usa anteojos, fecha del último examen y observaciones clínicas.</p>
+<p><strong>Registrar examen de la vista ahora (sin compra).</strong> Si marcas esta casilla se despliegan los campos del examen: fecha, optometrista, <strong>OD/OI</strong> (esfera, cilindro, eje, NP), ADD, AO, DIP, CV, AV, tipo de armazón y observaciones. Sirve para guardar un examen aunque el cliente todavía no compre.</p>
+<figure><img src="img/clientes_03_examen_inicial.jpg" alt="Examen inicial" loading="lazy"><figcaption>Examen inicial</figcaption></figure>
+<p>Pulsa <strong>Guardar</strong>. El sistema confirma <em>«El cliente se ha agregado correctamente»</em>. Si hubo examen, queda en el historial del cliente.</p>
+<h3 id="83-ver-y-editar-un-cliente" class="con-num"><span class="num">8.3</span>Ver y editar un cliente</h3>
+<p>Pulsa 🔍 en la fila del cliente. Se muestran sus datos generales, el historial clínico, los <strong>exámenes de la vista / RX</strong> y el <strong>historial de ventas</strong> (folio, fecha, importe, saldo y acceso a su orden de laboratorio).</p>
+<figure><img src="img/clientes_07_ficha.jpg" alt="Ficha del cliente" loading="lazy"><figcaption>Ficha del cliente</figcaption></figure>
+<p>Modifica lo necesario y pulsa <strong>Guardar</strong> (o <strong>Cancelar</strong> para salir sin cambios).</p>
+<h3 id="84-examenes-de-la-vista-y-rx" class="con-num"><span class="num">8.4</span>Exámenes de la vista y RX</h3>
+<p>El botón <strong>Ver examen más reciente</strong> abre la ventana de exámenes. Muestra el examen más reciente (ya sea uno registrado sin compra o la graduación de una venta) con todos sus valores.</p>
+<figure><img src="img/clientes_05_examen.jpg" alt="Examen más reciente" loading="lazy"><figcaption>Examen más reciente</figcaption></figure>
+<p>Desde esta ventana puedes:</p>
+<div class="tabla"><table><thead><tr><th>Botón</th><th>Función</th></tr></thead><tbody><tr><td><strong>Editar examen</strong></td><td>Habilita los campos para corregir el examen y guardarlo.</td></tr><tr><td><strong>Agregar examen</strong></td><td>Registra un examen nuevo (queda como el más reciente según su fecha).</td></tr><tr><td><strong>Ver historial</strong></td><td>Lista todos los exámenes del cliente para consultarlos.</td></tr></tbody></table></div>
+<aside class="nota">El <strong>examen que prevalece</strong> es el de fecha <strong>más reciente</strong>. Un examen registrado con fecha anterior no sustituye al más nuevo, solo aparece en el historial.</aside>
+<h3 id="85-reporte-del-examen-para-el-paciente" class="con-num"><span class="num">8.5</span>Reporte del examen para el paciente</h3>
+<p>En la misma ventana, el recuadro <strong>Reporte para el paciente</strong> permite entregar un resultado formal:</p>
+<ol><li>Escribe la <strong>Interpretación del optometrista</strong> (obligatoria).</li><li>Verifica el <strong>Correo del paciente</strong>.</li><li>Pulsa <strong>Imprimir PDF</strong> para abrir el reporte, o <strong>Enviar por correo</strong> para mandárselo.</li></ol>
+<figure><img src="img/clientes_06_reporte_paciente.jpg" alt="Reporte para el paciente" loading="lazy"><figcaption>Reporte para el paciente</figcaption></figure>
+<p>El reporte lleva el logotipo, los datos del paciente, la tabla del examen (OD/OI), la interpretación y la firma de quien realizó el examen.</p>
+<figure><img src="img/doc_examen_pdf.jpg" alt="Reporte PDF del examen" loading="lazy"><figcaption>Reporte PDF del examen</figcaption></figure>
+<h2 id="9-gastos" class="con-num"><span class="num">9</span>Gastos</h2>
+<p class="ruta"><strong>Menú:</strong> Caja → Gastos · <strong>Perfiles:</strong> Cajero y Gerente</p>
+<p>Sirve para registrar los <strong>egresos</strong> de la sucursal (papelería, mensajería, limpieza, transporte, etc.).</p>
+<figure><img src="img/gastos_01_formulario.jpg" alt="Formulario de gasto" loading="lazy"><figcaption>Formulario de gasto</figcaption></figure>
+<h3 id="91-registrar-un-gasto" class="con-num"><span class="num">9.1</span>Registrar un gasto</h3>
+<div class="tabla"><table><thead><tr><th>Campo</th><th>Qué capturar</th></tr></thead><tbody><tr><td><strong>Fecha</strong></td><td>Fecha del gasto (por omisión, hoy).</td></tr><tr><td><strong>Categoría</strong></td><td>Tipo de gasto (Energía eléctrica, Impuestos y derechos, Limpieza e insumos, Mantenimiento, Mensajería y paquetería, Otros gastos, Papelería, Renta, Salarios y nómina, Teléfono e internet, Transporte y taxi…).</td></tr><tr><td><strong>Pagado en efectivo de caja</strong></td><td>Casilla activa por omisión: el gasto <strong>sale del efectivo del corte</strong>. Si la desmarcas aparecen <strong>Método de pago</strong> y <strong>Cuenta de origen</strong> para gastos pagados de otra forma.</td></tr><tr><td><strong>Importe</strong></td><td>Monto mayor a cero.</td></tr><tr><td><strong>Referencia</strong></td><td>Folio de nota, factura o referencia (opcional).</td></tr><tr><td><strong>Comprobante</strong></td><td>Archivo <strong>PDF, JPG o PNG</strong> (opcional).</td></tr><tr><td><strong>Concepto</strong></td><td>Descripción clara del gasto (obligatorio).</td></tr></tbody></table></div>
+<p>Pulsa <strong>Registrar gasto</strong>. El sistema confirma con <em>«Gasto #N registrado»</em>.</p>
+<figure><img src="img/gastos_03_registrado.jpg" alt="Gasto registrado" loading="lazy"><figcaption>Gasto registrado</figcaption></figure>
+<h3 id="92-aprobacion-y-estados" class="con-num"><span class="num">9.2</span>Aprobación y estados</h3>
+<ul><li>Un gasto queda <strong>APROBADO</strong> de inmediato, salvo que su <strong>categoría exija aprobación</strong>: en ese caso queda <strong>PENDIENTE</strong> hasta que el administrador lo autorice. El gerente puede registrar gastos que no exijan aprobación como aprobados directamente.</li><li>Los gastos <strong>aprobados en efectivo</strong> se descuentan del <strong>efectivo esperado del corte</strong>.</li></ul>
+<h3 id="93-movimientos-recientes-y-cancelacion" class="con-num"><span class="num">9.3</span>Movimientos recientes y cancelación</h3>
+<p>Debajo del formulario se listan los <strong>movimientos recientes</strong> (fecha, sucursal, categoría, concepto, pago/cuenta, importe, usuario y estado) y los <strong>comprobantes recientes</strong>.</p>
+<ul><li>El botón <strong>Cancelar</strong> anula un gasto conservando el historial. Solo puedes cancelar los gastos que tu perfil tiene permitido.</li><li><strong>Alcance:</strong> el Cajero ve únicamente <strong>sus</strong> gastos; el Gerente ve los de <strong>toda su sucursal</strong>.</li></ul>
+<h3 id="rentabilidad-administrador-y-programador">Rentabilidad (Administrador y Programador)</h3>
+<p>Es la <strong>portada</strong> al entrar (y también está en Reportes → Rentabilidad). Muestra por sucursal y de toda la cadena: ventas netas, tickets, ticket promedio, costo de lo vendido, utilidad bruta, gastos operativos, utilidad operativa y sus márgenes. Filtros: fechas, una o varias sucursales y línea. Se puede exportar a Excel con los mismos filtros.</p>
+<p><strong>Criterios contables.</strong> Las ventas cuentan en su <strong>fecha de venta</strong> (no por cobro ni entrega) y las canceladas no cuentan. Se muestran <strong>sin IVA</strong> (los precios incluyen IVA; la tasa se ajusta en «Criterios de cálculo»). Los abonos no crean ventas ni tickets. Ventas netas = ventas − descuentos − devoluciones. El <strong>costo</strong> de cada partida se congela al venderla (nunca se usa el costo actual del catálogo); también en las micas sale del costo del catálogo (inventario cargado), no de lo que capture el comprador. Lo que no tiene costo <strong>no se toma como cero</strong>: el tablero lo avisa y marca como <em>provisionales</em> la utilidad y los márgenes. Los gastos operativos son los gastos aprobados más las comisiones; </p>
+<p><strong>Gastos centrales.</strong> En Gastos, el administrador puede marcar «Gasto central» (por ejemplo, los viáticos del director al visitar sucursales). No pertenece a una sucursal: se muestra aparte, se cuenta <strong>una sola vez</strong> en el total de la cadena y se reparte entre las sucursales según la política elegida (proporcional a las ventas netas, en partes iguales o sin repartir).</p>
+<p><strong>Devoluciones a clientes.</strong> Se registran como gasto en la categoría «Devoluciones a clientes»: en Rentabilidad restan de las ventas, no se cuentan como gasto. El sistema no revierte el costo de lo devuelto.</p>
+<h2 id="10-inventario-gerente" class="con-num"><span class="num">10</span>Inventario (Gerente)</h2>
+<p class="ruta"><strong>Menú:</strong> Inventario → Inventario general · <strong>Perfil:</strong> Gerente (entradas) y Administrador (todo)</p>
+<p>Una sola pantalla para las existencias, los movimientos y el registro de entradas, salidas, traspasos, conteos físicos y bajas de artículos, del almacén y de las sucursales. Todo se puede hacer <strong>uno por uno</strong> (botones «Entrada», «Salida», «Traspaso», «Conteo físico») o <strong>en masa con un CSV</strong> («Subir CSV»): el archivo se revisa primero, no se guarda nada hasta confirmar y, si hay un solo error, no se sube nada. «Descargar CSV» baja las existencias, el formato de conteo y los movimientos, y «Plantillas» trae un ejemplo por tipo.</p>
+<div class="tabla"><table><thead><tr><th>Acción</th><th>Quién</th></tr></thead><tbody><tr><td>Ver existencias y movimientos, registrar entradas (también en CSV)</td><td>Gerente (solo sus sucursales) y administrador</td></tr><tr><td>Salidas (con motivo), traspasos, conteo físico, bajas de artículos y motivos de salida</td><td>Solo administrador</td></tr></tbody></table></div>
+<p><strong>Las ventanas no pierden lo que capturas.</strong> Si ya escribiste algo en una ventana (entrada, salida, traspaso, conteo, baja, producto nuevo, CSV), un clic en el fondo, la tecla Esc o el botón Cerrar te preguntan antes de cerrarla, y al salir de la página el navegador avisa. Si el sistema marca un error, aparece dentro de la misma ventana y se conserva todo lo capturado para corregir y volver a enviar. Si no hubo conexión y no se pudo confirmar el guardado, revisa <strong>Movimientos</strong> antes de reintentar para no duplicar.</p>
+<p>Todo vive en esta pantalla: la pestaña <strong>Artículos</strong> (alta, edición y baja de artículos, para el administrador), <strong>Reposición</strong> (sugerencias para surtir sucursales desde el almacén), <strong>Importar y exportar</strong> (CSV maestro, tarifario de micas y exportación por sucursal) y los botones <strong>PDF</strong> de cada movimiento y de las existencias. El <strong>almacén</strong> se crea y se edita en Sucursales con el botón «Crear almacén».</p>
+<p>Lo que sigue es la consulta con PDF:</p>
+<h3 id="101-movimientos" class="con-num"><span class="num">10.1</span>Movimientos</h3>
+<p>Elige la <strong>Sucursal</strong>. Se listan los <strong>movimientos de almacén</strong> (entradas, salidas, inventario físico, traspasos) con su número, tipo, fecha y hora. La lupa abre el detalle del movimiento en PDF.</p>
+<figure><img src="img/inventario_01_movimientos.jpg" alt="Movimientos de inventario" loading="lazy"><figcaption>Movimientos de inventario</figcaption></figure>
+<h3 id="102-existencias" class="con-num"><span class="num">10.2</span>Existencias</h3>
+<p>Pulsa <strong>Existencia</strong> para ver el inventario por artículo:</p>
+<figure><img src="img/inventario_02_existencias.jpg" alt="Existencias" loading="lazy"><figcaption>Existencias</figcaption></figure>
+<div class="tabla"><table><thead><tr><th>Columna</th><th>Significado</th></tr></thead><tbody><tr><td><strong>Categoría / Clave / Descripción</strong></td><td>Datos del artículo y su tipo de control entre paréntesis.</td></tr><tr><td><strong>Entradas</strong></td><td>Piezas que han entrado a la sucursal.</td></tr><tr><td><strong>Salidas</strong></td><td>Piezas vendidas o dadas de salida.</td></tr><tr><td><strong>Disponible</strong></td><td>Entradas − salidas. Los artículos <em>sobre pedido</em> y <em>servicios</em> muestran <strong>«No aplica»</strong>.</td></tr></tbody></table></div>
+<p>Usa el filtro <strong>Categoría</strong> para acotar. Con <strong>Imprimir</strong> obtienes el <strong>Reporte de inventario</strong> en PDF; <strong>Regresar</strong> vuelve a los movimientos.</p>
+<figure><img src="img/inventario_03_pdf.jpg" alt="Reporte de inventario en PDF" loading="lazy"><figcaption>Reporte de inventario en PDF</figcaption></figure>
+<aside class="nota">Las altas masivas de artículos (importación de CSV), el catálogo de artículos y las categorías los administra el <strong>Administrador</strong>.</aside>
+<h2 id="11-reportes-gerente" class="con-num"><span class="num">11</span>Reportes (Gerente)</h2>
+<p class="ruta"><strong>Menú:</strong> Reportes · <strong>Perfil:</strong> Gerente</p>
+<p>Todos los reportes respetan las <strong>sucursales a las que tienes acceso</strong>.</p>
+<h3 id="111-ingresos-ingresos-por-sucursal" class="con-num"><span class="num">11.1</span>Ingresos — Ingresos por sucursal</h3>
+<p>Muestra el dinero <strong>cobrado</strong> por sucursal, fecha y corte.</p>
+<figure><img src="img/rep_ingresos_0.jpg" alt="Ingresos por sucursal" loading="lazy"><figcaption>Ingresos por sucursal</figcaption></figure>
+<ol><li>Elige <strong>Fecha inicial</strong>, <strong>Fecha final</strong> y <strong>Sucursal</strong> (o <em>Todas las disponibles</em>).</li><li>Pulsa <strong>Consultar</strong> (o <strong>Exportar Excel</strong>).</li></ol>
+<p>Las tarjetas resumen <strong>Efectivo, Tarjeta, Otros ingresos</strong> y <strong>Total cobrado</strong>. En la tabla cada renglón es un día de un corte (con su caja y estado Abierto/Cerrado). Los cobros de las nuevas cancelaciones <strong>se conservan como dinero recibido</strong>; las devoluciones se registran una sola vez como gastos. Las cancelaciones históricas anteriores a esta regla conservan sus cifras. La lupa <strong>Ver</strong> abre el <strong>corte completo</strong>.</p>
+<figure><img src="img/rep_ingresos_1_detalle.jpg" alt="Detalle del corte desde el reporte" loading="lazy"><figcaption>Detalle del corte desde el reporte</figcaption></figure>
+<h3 id="112-reporte-de-ventas" class="con-num"><span class="num">11.2</span>Reporte de ventas</h3>
+<p>Una sola pantalla para consultar <strong>ventas, pagos, saldos y vencimientos</strong>.</p>
+<figure><img src="img/rep_ventas_0.jpg" alt="Reporte de ventas" loading="lazy"><figcaption>Reporte de ventas</figcaption></figure>
+<div class="tabla"><table><thead><tr><th>Filtro</th><th>Opciones</th></tr></thead><tbody><tr><td><strong>Inicio / Fin</strong></td><td>Rango de fechas.</td></tr><tr><td><strong>Estado</strong></td><td>Todas, Activas, Pendientes, Vencidas, Pagadas, Canceladas.</td></tr><tr><td><strong>Vendedor</strong></td><td>Todos o un empleado.</td></tr></tbody></table></div>
+<p>Resumen: <strong>Operaciones, Total vendido, Total abonado y Saldo pendiente</strong>. La tabla muestra folio, fecha, entrega, cliente, vendedor, sucursal, total, abonos, saldo y un <strong>estado</strong> con color (<em>Pagada</em>, *Pendiente*…). Con <strong>Exportar CSV</strong> descargas los datos y con <strong>Imprimir</strong> obtienes la versión de impresión.</p>
+<h3 id="113-salidas-de-inventario" class="con-num"><span class="num">11.3</span>Salidas de inventario</h3>
+<p>Reporte en PDF de las <strong>piezas vendidas</strong> (salidas) agrupadas por categoría.</p>
+<figure><img src="img/rep_salidas_0.jpg" alt="Salidas de inventario" loading="lazy"><figcaption>Salidas de inventario</figcaption></figure>
+<p>Elige la <strong>Sucursal</strong> y el rango (<strong>dInicio</strong> / <strong>dFin</strong>) y pulsa <strong>Reporte</strong>. Se abre el PDF con las salidas por artículo, subtotales por categoría y el total.</p>
+<figure><img src="img/rep_salidas_1_pdf.jpg" alt="Salidas de inventario en PDF" loading="lazy"><figcaption>Salidas de inventario en PDF</figcaption></figure>
+<h3 id="114-ordenes-de-laboratorio" class="con-num"><span class="num">11.4</span>Órdenes de laboratorio</h3>
+<p>Lista las <strong>ventas con graduación</strong> (lentes que se mandan a hacer) y permite avisar cuando <strong>llega el pedido</strong>.</p>
+<figure><img src="img/rep_ordenes_0.jpg" alt="Nuevas órdenes de laboratorio" loading="lazy"><figcaption>Nuevas órdenes de laboratorio</figcaption></figure>
+<p>Columnas: <strong>Sucursal / nota, Fecha, Cliente, Registró / solicitó, Pedido, Importe nota, Entrega, Llegada y Detalle</strong>. Con <strong>Consultar</strong> filtras por fechas y sucursal; <strong>Exportar Excel</strong> descarga la lista.</p>
+<p>La lupa <strong>Ver</strong> muestra la <strong>nota, el cliente y el RX</strong> completos:</p>
+<figure><img src="img/ordenes_02_detalle.jpg" alt="Detalle de la orden" loading="lazy"><figcaption>Detalle de la orden</figcaption></figure>
+<h4 id="avisar-que-llego-el-pedido">Avisar que llegó el pedido</h4>
+<p>Cuando el pedido llega del laboratorio:</p>
+<ol><li>En la columna <strong>Llegada</strong> pulsa <strong>Pedido recibido</strong> y confirma.</li><li>El sistema registra la <strong>fecha de llegada</strong> y envía un <strong>correo</strong> a los destinatarios de avisos de pedidos (con nota, cliente, teléfono, sucursal y fecha de entrega prometida).</li><li>En el renglón aparece <strong>Recibido {fecha}</strong>, el botón verde <strong>WhatsApp al cliente</strong> y el estado del correo.</li></ol>
+<figure><img src="img/ordenes_03_recibido.jpg" alt="Pedido recibido" loading="lazy"><figcaption>Pedido recibido</figcaption></figure>
+<ul><li><strong>WhatsApp al cliente</strong> abre WhatsApp con un mensaje listo para el cliente: <em>«Hola {cliente}, tu pedido de lentes (folio 000001‑D) ya llegó a {sucursal}. Te esperamos.»</em> firmado como <em>Genéricos y Ópticas de Similares</em>. <strong>Solo debes pulsar Enviar.</strong> Sale desde el WhatsApp que esté abierto en esa computadora (usa el de la empresa).</li><li>Si el cliente <strong>no tiene un teléfono válido</strong> (celular o teléfono de 10 dígitos) se indica <em>«Sin teléfono válido para WhatsApp»</em> y no se genera el enlace.</li><li>Si el correo falla, aparece <strong>Reenviar correo</strong>. Un pedido solo se puede marcar <strong>una vez</strong>.</li></ul>
+<h3 id="115-clientes-reporte-de-clientes" class="con-num"><span class="num">11.5</span>Clientes — Reporte de clientes</h3>
+<p>Lista de clientes por sucursal.</p>
+<figure><img src="img/rep_clientes_1.jpg" alt="Reporte de clientes" loading="lazy"><figcaption>Reporte de clientes</figcaption></figure>
+<p>Marca la(s) <strong>Sucursal(es)</strong> y pulsa <strong>Consultar</strong>. Muestra <strong>Cliente, Teléfono, E‑mail, Fecha de nacimiento, Sucursal</strong> y, si el cliente tiene un número válido, el botón <strong>WhatsApp</strong> para contactarlo. La columna <em>Teléfono</em> muestra el <strong>celular</strong> del cliente y, si no tiene, su <strong>teléfono fijo</strong>.</p>
+<h3 id="116-resumen-financiero" class="con-num"><span class="num">11.6</span>Resumen financiero</h3>
+<p>Visión rápida de <strong>cómo va el negocio</strong> en un periodo.</p>
+<figure><img src="img/rep_financiero_1.jpg" alt="Resumen financiero" loading="lazy"><figcaption>Resumen financiero</figcaption></figure>
+<p>Elige <strong>Hoy</strong>, <strong>Esta semana</strong>, <strong>Este mes</strong> o un rango de <strong>Inicio / Fin</strong> y pulsa <strong>Generar</strong> (o <strong>Imprimir/PDF</strong>). Muestra:</p>
+<div class="tabla"><table><thead><tr><th>Indicador</th><th>Significado</th></tr></thead><tbody><tr><td><strong>Ventas registradas</strong></td><td>Total vendido.</td></tr><tr><td><strong>Ingresos cobrados</strong></td><td>Dinero efectivamente cobrado.</td></tr><tr><td><strong>Gastos aprobados</strong></td><td>Egresos del periodo.</td></tr><tr><td><strong>Comisiones generadas</strong></td><td>Comisiones de ventas liquidadas.</td></tr><tr><td><strong>Flujo neto (después de comisiones)</strong></td><td>Ingresos − gastos − comisiones.</td></tr></tbody></table></div>
+<p>Y tres tablas: <strong>Ingresos por método y cuenta</strong>, <strong>Gastos por categoría</strong> y <strong>Comisiones por empleado</strong>.</p>
+<h2 id="12-documentos-que-genera-el-sistema" class="con-num"><span class="num">12</span>Documentos que genera el sistema</h2>
+<h3 id="121-ticket-nota-de-venta" class="con-num"><span class="num">12.1</span>Ticket (nota de venta)</h3>
+<p>Se abre con el botón <strong>Ticket</strong> (en <em>Ventas</em>, <em>Abonos</em> o <em>Registro de venta</em>). Es un PDF para impresora de ticket con: sucursal, folio, estado (<em>PENDIENTE DE LIQUIDAR</em> o liquidada), fecha y entrega, cliente y teléfono, quién lo atendió, el detalle de la venta, <strong>total, abonos y saldo pendiente</strong>, el importe con letra, la forma de pago y las leyendas de garantía.</p>
+<figure><img src="img/doc_ticket_nota.jpg" alt="Ticket de venta" loading="lazy"><figcaption>Ticket de venta</figcaption></figure>
+<h3 id="122-orden-de-laboratorio" class="con-num"><span class="num">12.2</span>Orden de laboratorio</h3>
+<p>Se abre con <strong>Ord. Lab</strong>. Lleva todo lo que necesita el laboratorio: paciente, <strong>graduación (OD/OI)</strong>, ADD y DIP, datos del <strong>lente</strong> (tipo, progresivo, material, color), del <strong>armazón</strong>, servicios, <strong>medidas de montaje</strong>, observaciones, optometrista y quién capturó.</p>
+<figure><img src="img/doc_orden_lab.jpg" alt="Orden de laboratorio" loading="lazy"><figcaption>Orden de laboratorio</figcaption></figure>
+<h3 id="123-solicitud-de-factura" class="con-num"><span class="num">12.3</span>Solicitud de factura</h3>
+<p>Se abre con <strong>Factura</strong> (en Ventas) o <strong>Solicitar factura</strong> (en Registro de venta). Sirve para pedir al contador que <strong>timbre la factura (CFDI 4.0)</strong>.</p>
+<figure><img src="img/doc_factura_solicitud.jpg" alt="Solicitar factura" loading="lazy"><figcaption>Solicitar factura</figcaption></figure>
+<div class="tabla"><table><thead><tr><th>Campo</th><th>Notas</th></tr></thead><tbody><tr><td><strong>RFC</strong></td><td>13 caracteres persona física, 12 moral.</td></tr><tr><td><strong>Código postal del domicilio fiscal</strong></td><td>Del cliente.</td></tr><tr><td><strong>Nombre o razón social</strong></td><td>Exactamente como en la Constancia de Situación Fiscal, sin <em>S.A. de C.V.</em></td></tr><tr><td><strong>Régimen fiscal</strong> y <strong>Uso del CFDI</strong></td><td>Se eligen de una lista. Para lentes graduados deducibles normalmente se usa <strong>D01</strong>, y el pago debe ser con tarjeta, transferencia o cheque (no en efectivo).</td></tr><tr><td><strong>Correo del cliente</strong></td><td>Para recibir la factura.</td></tr><tr><td><strong>Constancia de Situación Fiscal</strong></td><td>Archivo opcional (PDF/JPG/PNG).</td></tr></tbody></table></div>
+<p><strong>Quién captura y quién envía.</strong> El vendedor (cajero o gerente) captura los datos fiscales del cliente y pulsa <strong>Guardar datos para factura</strong>; no vuelve a verlos. Los datos quedan en <strong>Facturación &gt; Facturas pendientes</strong>, donde el administrador (o el programador) abre cada ticket, corrige si hay errores y pulsa <strong>Solicitar factura</strong> para enviarlos al contador. Solo ellos pueden enviar la solicitud.</p>
+<p>Pulsa <strong>Solicitar factura</strong>. Si la venta tiene saldo pendiente se factura como <strong>PPD</strong> (pago en parcialidades) y el contador emitirá complementos por cada abono; si está liquidada, como <strong>PUE</strong>.</p>
+<h3 id="124-reporte-del-examen-y-ticket-del-corte" class="con-num"><span class="num">12.4</span>Reporte del examen y ticket del corte</h3>
+<p>Se describen en las secciones 8.5 y 4.5.</p>
+<h2 id="13-avisos-automaticos" class="con-num"><span class="num">13</span>Avisos automáticos</h2>
+<p>El sistema envía correos de forma automática en estos casos (los destinatarios los define el administrador):</p>
+<div class="tabla"><table><thead><tr><th>Evento</th><th>Qué se envía</th><th>A quién</th></tr></thead><tbody><tr><td><strong>Pedido recibido</strong> (botón en <em>Reportes → Órdenes de laboratorio</em>)</td><td>Correo con nota, cliente, teléfono, sucursal y entrega prometida.</td><td>Destinatarios de avisos de <strong>pedidos</strong>.</td></tr><tr><td><strong>Stock mínimo</strong> (proceso diario)</td><td>Alerta cuando la existencia de un artículo baja de su mínimo.</td><td>Correo de alertas de la sucursal.</td></tr><tr><td><strong>Horas extra por aprobar</strong> (cada captura de un empleado)</td><td>Aviso con el empleado, la sucursal, la fecha, las horas y la nota. En Telegram trae los botones <strong>Aprobar</strong> y <strong>Rechazar</strong> (al rechazar, el bot pide el motivo: responde al mensaje). Sin Telegram se envía por correo.</td><td>Destino de Telegram o correos con el aviso de <strong>horas extra</strong>.</td></tr></tbody></table></div>
+<p>Todos los correos terminan con la firma <strong>Genéricos y Ópticas de Similares</strong>.</p>
+<h3 id="reportes-horas-extra-administrador">Reportes → Horas extra (administrador)</h3>
+<p>Muestra las horas extra de todos los empleados en un periodo, con filtros por fechas, sucursal, empleado y estado, y el resumen de horas por empleado. Cada captura pendiente se <strong>aprueba</strong>, se <strong>modifica</strong> (se aprueban menos horas de las capturadas) o se <strong>rechaza</strong> con un motivo obligatorio. Un administrador <strong>no decide sus propias horas</strong>: lo hace otro administrador. Los botones <em>Excel: detalle</em> y <em>Excel: resumen por empleado</em> descargan el periodo para la nómina.</p>
+<h2 id="14-que-puede-hacer-cada-perfil" class="con-num"><span class="num">14</span>Qué puede hacer cada perfil</h2>
+<div class="tabla"><table><thead><tr><th>Función</th><th class="center">Cajero</th><th class="center">Gerente</th></tr></thead><tbody><tr><td>Abrir y cerrar cortes</td><td class="center"><span class="si" aria-label="sí">✔</span></td><td class="center"><span class="si" aria-label="sí">✔</span></td></tr><tr><td>Registrar depósitos de efectivo (corte abierto)</td><td class="center"><span class="si" aria-label="sí">✔</span></td><td class="center"><span class="si" aria-label="sí">✔</span></td></tr><tr><td>Registrar / cancelar depósitos en corte <strong>cerrado</strong></td><td class="center"><span class="no" aria-label="no">✖</span></td><td class="center"><span class="si" aria-label="sí">✔</span></td></tr><tr><td>Reabrir o editar un corte</td><td class="center"><span class="no" aria-label="no">✖</span></td><td class="center"><span class="no" aria-label="no">✖</span> <em>(solo Administrador)</em></td></tr><tr><td>Vender (notas, graduación, pagos)</td><td class="center"><span class="si" aria-label="sí">✔</span></td><td class="center"><span class="si" aria-label="sí">✔</span></td></tr><tr><td>Registrar clientes y exámenes</td><td class="center"><span class="si" aria-label="sí">✔</span></td><td class="center"><span class="si" aria-label="sí">✔</span></td></tr><tr><td>Cobrar abonos</td><td class="center"><span class="si" aria-label="sí">✔</span> <em>(solo sus ventas)</em></td><td class="center"><span class="si" aria-label="sí">✔</span> <em>(toda la sucursal)</em></td></tr><tr><td>Ver el registro de ventas</td><td class="center"><span class="si" aria-label="sí">✔</span> <em>(solo sus ventas)</em></td><td class="center"><span class="si" aria-label="sí">✔</span> <em>(toda la sucursal)</em></td></tr><tr><td>Cancelar ventas</td><td class="center"><span class="no" aria-label="no">✖</span></td><td class="center"><span class="si" aria-label="sí">✔</span></td></tr><tr><td>Solicitar factura, imprimir ticket y orden de laboratorio</td><td class="center"><span class="si" aria-label="sí">✔</span></td><td class="center"><span class="si" aria-label="sí">✔</span></td></tr><tr><td>Checar entrada / salida</td><td class="center"><span class="si" aria-label="sí">✔</span></td><td class="center"><span class="si" aria-label="sí">✔</span></td></tr><tr><td>Registrar gastos</td><td class="center"><span class="si" aria-label="sí">✔</span> <em>(ve los suyos)</em></td><td class="center"><span class="si" aria-label="sí">✔</span> <em>(ve los de la sucursal)</em></td></tr><tr><td>Consultar inventario y existencias</td><td class="center"><span class="no" aria-label="no">✖</span></td><td class="center"><span class="si" aria-label="sí">✔</span></td></tr><tr><td>Reportes (ingresos, ventas, salidas, órdenes, clientes, financiero)</td><td class="center"><span class="no" aria-label="no">✖</span></td><td class="center"><span class="si" aria-label="sí">✔</span></td></tr><tr><td>Marcar <strong>Pedido recibido</strong> y enviar WhatsApp al cliente</td><td class="center"><span class="no" aria-label="no">✖</span></td><td class="center"><span class="si" aria-label="sí">✔</span></td></tr></tbody></table></div>
+<h2 id="15-preguntas-frecuentes-y-solucion-de-problemas" class="con-num"><span class="num">15</span>Preguntas frecuentes y solución de problemas</h2>
+<p><strong>No puedo vender, me manda a Cortes.</strong> No tienes un corte abierto. Abre uno con <strong>Nuevo</strong> capturando el fondo (sección 4.2).</p>
+<p><strong>Dice «Stock insuficiente… Disponible: N».</strong> Intentas vender más piezas de un artículo inventariable de las que hay en la sucursal. Baja la cantidad o pide al gerente que verifique el inventario.</p>
+<p><strong>No me deja agregar el pago con tarjeta / transferencia.</strong> Falta elegir la <strong>Cuenta / destino</strong>. Si la lista está vacía, el administrador debe dar de alta la terminal o cuenta.</p>
+<p><strong>No puedo guardar la venta.</strong> Verifica que estén capturados <strong>cliente, optometrista, vendedor, fecha de entrega</strong> y que haya <strong>al menos un artículo</strong>. Los campos en rojo indican lo que falta. En las micas, la DIP es obligatoria.</p>
+<p><strong>Un descuento no se acepta.</strong> El descuento por artículo debe estar entre <strong>0 % y 100 %</strong>.</p>
+<p><strong>No veo una nota en Abonos o en Registro de ventas.</strong> Si eres <strong>Cajero</strong>, solo ves las notas donde <strong>tú</strong> eres el vendedor. El gerente puede consultarlas todas.</p>
+<p><strong>No aparece el botón «Cancelar Venta».</strong> Solo gerentes y administradores pueden cancelar ventas. Pídelo a un gerente.</p>
+<p><strong>Cerré el corte y me equivoqué en lo contado.</strong> Un corte cerrado no se edita con tu perfil. Avisa al administrador para que lo corrija.</p>
+<p><strong>Al abonar dice «Debes tener un corte abierto».</strong> Los abonos se registran dentro de un corte. Abre el corte de tu caja.</p>
+<p><strong>No se envía el correo del pedido recibido.</strong> El pedido queda registrado igualmente. En el renglón pulsa <strong>Reenviar correo</strong>. Si sigue fallando, avisa al administrador (puede faltar configurar el correo de avisos o el servidor de correo).</p>
+<p><strong>En «Pedido recibido» dice «Sin teléfono válido para WhatsApp».</strong> El cliente no tiene celular/teléfono de 10 dígitos. Captura su celular en la ficha (sección 8.3) y vuelve a consultar.</p>
+<p><strong>Se cerró mi sesión / el sistema pide iniciar sesión de nuevo.</strong> La sesión caduca por seguridad. Vuelve a entrar; los datos ya guardados no se pierden. Si estabas capturando algo, revísalo antes de guardar de nuevo.</p>
+<h2 id="16-glosario" class="con-num"><span class="num">16</span>Glosario</h2>
+<div class="tabla"><table><thead><tr><th>Término</th><th>Significado</th></tr></thead><tbody><tr><td><strong>Corte</strong></td><td>Periodo de trabajo de una caja: va del fondo inicial al conteo del efectivo.</td></tr><tr><td><strong>Fondo</strong></td><td>Efectivo con que se abre la caja.</td></tr><tr><td><strong>Nota (remisión)</strong></td><td>Documento de venta del mostrador.</td></tr><tr><td><strong>Anticipo / Abono</strong></td><td>Pago parcial de una nota.</td></tr><tr><td><strong>Saldo</strong></td><td>Lo que falta por cobrar de una nota.</td></tr><tr><td><strong>Liquidada</strong></td><td>Nota con saldo cero.</td></tr><tr><td><strong>RX</strong></td><td>Receta o graduación del cliente.</td></tr><tr><td><strong>OD / OI</strong></td><td>Ojo derecho / ojo izquierdo.</td></tr><tr><td><strong>Esf. / Cil. / Eje</strong></td><td>Esfera, cilindro y eje de la graduación.</td></tr><tr><td><strong>ADD</strong></td><td>Adición (para lentes progresivos o bifocales).</td></tr><tr><td><strong>AO</strong></td><td>Altura óptica.</td></tr><tr><td><strong>DIP / NPD / DNP</strong></td><td>Distancia interpupilar / distancia naso‑pupilar.</td></tr><tr><td><strong>CV / AV</strong></td><td>Campo visual / agudeza visual.</td></tr><tr><td><strong>Inventariable</strong></td><td>Artículo cuyo stock se controla.</td></tr><tr><td><strong>Sobre pedido</strong></td><td>Artículo que se pide al laboratorio; no maneja existencia.</td></tr><tr><td><strong>CFDI</strong></td><td>Factura electrónica (Comprobante Fiscal Digital por Internet).</td></tr><tr><td><strong>PUE / PPD</strong></td><td>Pago en una sola exhibición / pago en parcialidades o diferido.</td></tr><tr><td><strong>Comisión</strong></td><td>Porcentaje que se paga al vendedor por cada nota liquidada.</td></tr></tbody></table></div>
+  </main>
+</div>
+<footer class="pie"><em>Documentación generada para la versión actual del sistema. Las capturas usan datos de demostración (sucursal y clientes ficticios).</em></footer>
+
+<script>
+(function () {
+  var det = document.getElementById('indice-det');
+  try { if (window.matchMedia('(max-width: 959px)').matches) det.open = false; } catch (e) {}
+  var enlaces = [].slice.call(document.querySelectorAll('.indice a'));
+  var porId = {}; enlaces.forEach(function (a) { porId[a.getAttribute('href').slice(1)] = a; });
+  var secciones = [].slice.call(document.querySelectorAll('.manual h2[id]'));
+  function marcar() {
+    var actual = secciones[0];
+    secciones.forEach(function (h) { if (h.getBoundingClientRect().top < 140) actual = h; });
+    enlaces.forEach(function (a) { a.classList.remove('activo'); });
+    if (actual && porId[actual.id]) porId[actual.id].classList.add('activo');
+  }
+  window.addEventListener('scroll', marcar, { passive: true });
+  window.addEventListener('hashchange', marcar);
+  marcar();
+  // En el celular, al elegir una seccion se pliega el indice.
+  enlaces.forEach(function (a) { a.addEventListener('click', function () { try { if (window.matchMedia('(max-width: 959px)').matches) det.open = false; } catch (e) {} }); });
+})();
+</script>
+
+</body>
+</html>
